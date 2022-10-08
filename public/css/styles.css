@@ -2,3 +2,9 @@ body {
   font-family: sans-serif;
   background: #cccccc;
 }
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
