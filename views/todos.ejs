@@ -1,0 +1,19 @@
+<h3>Todos :</h3>
+    <table>
+      <tr>
+        <th>Sr. No</th>
+        <th>Title</th>
+        <th>Due Date</th>
+        <th>Completed ?</th>
+      </tr>
+
+      <% todos.map((todoItem, index) => { %>
+      <tr>
+        <td><%= index %></td>
+        <td><%= todoItem.title %></td>
+        <td><%= todoItem.dueDate %></td>
+        <td><%= todoItem.completed %></td>
+      </tr>
+      <% }) %>
+    </table>
+    <br />
