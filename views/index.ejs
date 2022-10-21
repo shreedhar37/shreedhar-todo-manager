@@ -4,18 +4,55 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/styles.css" />
+    <script defer src="https://cdn.tailwindcss.com"></script>
     <script defer src="/js/script.js" type="text/javascript"></script>
     <title>TO-DO Manager</title>
   </head>
   <body>
     <!-- ender the contents of header.js -->
 
-    <header><%- include('header.ejs') %></header>
-    <br />
-    <!-- ender the contents of todos.js -->
-    <div><%- include( "todos.ejs") %></div>
-    <br />
+    <div class="grid grid-cols-6">
+      <div class="col-start-3 col-span-2">
+        <header><%- include('header.ejs') %></header>
+        <form>
+          <div class="flex gap-2 py-4">
+            <div class="flex-auto">
+              <input
+                type="text"
+                placeholder="What's next?"
+                class="border border-gray-300 w-full rounded p-2 text-sm"
+                required
+              />
+            </div>
+            <div class="flex-auto">
+              <input
+                type="date"
+                required
+                class="border border-gray-300 w-full rounded p-2 text-sm leading-4"
+              />
+            </div>
+            <div class="flex-none">
+              <button
+                type="submit"
+                class="bg-green-600 text-white px-5 py-2 rounded font-medium mr-2 mb-2 py-1.5"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </form>
+        <br />
+
+        <!-- render contents of todo.ejs -->
+        <div>
+          <h5>Overdue</h5>
+          <%- include("todos.ejs") %>
+          <h5>Due Today</h5>
+          <h5>Due Later</h5>
+        </div>
+      </div>
+    </div>
     <!-- render the contents of footer.ejs  -->
-    <footer><%- include("footer.ejs") %></footer>
+    <!-- <footer><%- include("footer.ejs") %></footer> -->
   </body>
 </html>
