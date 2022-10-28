@@ -5,6 +5,7 @@ const { Todo } = require("./models");
 const bodyParser = require("body-parser");
 const todo = require("./models/todo");
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 
@@ -47,7 +48,8 @@ app.get("/todos/:id", async function (request, response) {
 app.post("/todos", async function (request, response) {
   try {
     const todo = await Todo.addTodo(request.body);
-    return response.json(todo);
+    //return response.json(todo);
+    return response.redirect("/");
   } catch (error) {
     console.log(error);
     return response.status(422).json(error);
