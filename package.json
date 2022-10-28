@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jest"
- },
+    "test": "jest",
+    "prepare": "husky install"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -15,9 +16,16 @@
     "pg": "^8.7.3",
     "sequelize": "^6.21.4"
   },
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "prettier --write ."
+    ]
+  },
   "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "nodemon": "^2.0.19",
     "sequelize-cli": "^6.4.1"
   }
 }
-
