@@ -47,31 +47,10 @@
 
         <!-- render contents of todo.ejs -->
         <div>
-          <div class="flex items-center mb-2">
-            <h5>Overdue</h5>
-            <span
-              id="count-overdue"
-              class="bg-gray-200 text-sm ml-2 px-2 rounded"
-              >2</span
-            >
-          </div>
+          <h5>Overdue</h5>
           <%- include("todos.ejs") %>
-          <div class="flex items-center mb-2">
-            <h5>Due Today</h5>
-            <span
-              id="count-due-today"
-              class="bg-gray-200 text-sm ml-2 px-2 rounded"
-              >0</span
-            >
-          </div>
-          <div class="flex items-center">
-            <h5>Due Later</h5>
-            <span
-              id="count-due-later"
-              class="bg-gray-200 text-sm ml-2 px-2 rounded"
-              >0</span
-            >
-          </div>
+          <h5>Due Today</h5>
+          <h5>Due Later</h5>
         </div>
       </div>
     </div>
