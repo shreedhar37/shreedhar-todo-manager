@@ -47,10 +47,19 @@
 
         <!-- render contents of todo.ejs -->
         <div>
-          <h5>Overdue</h5>
+          <div class="flex items-center">
+            <h5>Overdue</h5>
+            <span class="bg-gray-200 rounded px-2 text-sm ml-2 rounded">2</span>
+          </div>
           <%- include("todos.ejs") %>
-          <h5>Due Today</h5>
-          <h5>Due Later</h5>
+          <div class="flex items-center mb-4">
+            <h5>Due Today</h5>
+            <span class="bg-gray-200 rounded px-2 text-sm ml-2 rounded">0</span>
+          </div>
+          <div class="flex items-center">
+            <h5>Due Later</h5>
+            <span class="bg-gray-200 rounded px-2 text-sm ml-2 rounded">0</span>
+          </div>
         </div>
       </div>
     </div>
