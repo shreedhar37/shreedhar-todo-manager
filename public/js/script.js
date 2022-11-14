@@ -1,4 +1,15 @@
 console.log("First JS import on EJS application!!");
-// const name = "Shreedhar";
 
-// const today = new Date().toLocaleDateString("en-CA");
+// eslint-disable-next-line no-unused-vars
+const updateTodo = (id) => {
+  fetch(`/todos/${id}/markAsCompleted`, {
+    method: "put",
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((res) => {
+      if (res.ok) {
+        window.location.reload();
+      }
+    })
+    .catch((err) => console.error(err));
+};

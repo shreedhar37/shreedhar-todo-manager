@@ -4,11 +4,9 @@
     <div
       class="flex items-center w-fit my-2 px-2 py-1 hover:bg-purple-50 rounded"
     >
-      <input
-        id="todo-checkbox-<%= todoItem.id %>"
-        type="checkbox"
-        class="w-4 h-4 text-blue-600 bg-gray border-gray-600"
-      />
+      <input id="todo-checkbox-<%= todoItem.id %>" type="checkbox" class="w-4
+      h-4 text-blue-600 bg-gray border-gray-600" <%= todoItem.completed?
+      "checked" : "" %> onclick="updateTodo(<%= todoItem.id %>)" />
       <label
         for="todo-checkbox-<%= todoItem.id %>"
         class="ml-2 text-sm text-gray-600 cursor-pointer"
