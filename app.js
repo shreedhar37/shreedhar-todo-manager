@@ -16,11 +16,20 @@ app.get("/", async function (request, response) {
     const overdueItems = await Todo.getOverdueItems();
     const dueTodayItems = await Todo.getDueTodayItems();
     const dueLaterItems = await Todo.getDueLaterItems();
-    return response.render("index", {
-      overdueItems: overdueItems,
-      dueTodayItems: dueTodayItems,
-      dueLaterItems: dueLaterItems,
-    });
+
+    if (request.accepts("html")) {
+      return response.render("index", {
+        overdueItems: overdueItems,
+        dueTodayItems: dueTodayItems,
+        dueLaterItems: dueLaterItems,
+      });
+    } else {
+      return response.json({
+        overdueItems: overdueItems,
+        dueTodayItems: dueTodayItems,
+        dueLaterItems: dueLaterItems,
+      });
+    }
   } catch (error) {
     console.log(error);
     return response.status(422).json(error);
