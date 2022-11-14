@@ -1,5 +1,6 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Model, where } = require("sequelize");
+const { Op } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -24,6 +25,39 @@ module.exports = (sequelize, DataTypes) => {
         order: [["id", "ASC"]],
       });
       return todos;
+    }
+
+    static getOverdueItems() {
+      const overdueItems = Todo.findAll({
+        where: {
+          dueDate: { [Op.lt]: new Date() },
+        },
+        order: [["id", "ASC"]],
+      });
+
+      return overdueItems;
+    }
+
+    static getDueTodayItems() {
+      const dueTodayItems = Todo.findAll({
+        where: {
+          dueDate: new Date(),
+        },
+        order: [["id", "ASC"]],
+      });
+
+      return dueTodayItems;
+    }
+
+    static getDueLaterItems() {
+      const dueLaterItems = Todo.findAll({
+        where: {
+          dueDate: { [Op.gt]: new Date() },
+        },
+        order: [["id", "ASC"]],
+      });
+
+      return dueLaterItems;
     }
 
     deleteTodo() {

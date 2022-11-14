@@ -13,8 +13,14 @@ app.set("view engine", "ejs");
 
 app.get("/", async function (request, response) {
   try {
-    const todos = await Todo.getTodos();
-    return response.render("index", { todos: todos });
+    const overdueItems = await Todo.getOverdueItems();
+    const dueTodayItems = await Todo.getDueTodayItems();
+    const dueLaterItems = await Todo.getDueLaterItems();
+    return response.render("index", {
+      overdueItems: overdueItems,
+      dueTodayItems: dueTodayItems,
+      dueLaterItems: dueLaterItems,
+    });
   } catch (error) {
     console.log(error);
     return response.status(422).json(error);
