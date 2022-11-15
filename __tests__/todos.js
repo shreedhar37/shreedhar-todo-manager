@@ -1,11 +1,15 @@
 const request = require("supertest");
-
+let cheerio = require("cheerio");
 const db = require("../models/index");
 const app = require("../app");
 // const { json } = require("sequelize");
 
 let server, agent;
 
+const extractCsrfToken = (res) => {
+  var $ = cheerio.load(res.text);
+  return $("[name = _csrf]").val();
+};
 describe("Todo Application", function () {
   beforeAll(async () => {
     await db.sequelize.sync({ force: true });
@@ -23,10 +27,13 @@ describe("Todo Application", function () {
   });
 
   test("Creates a todo and responds with json at /todos POST endpoint", async () => {
+    const res = await agent.get("/");
+    const csrfToken = extractCsrfToken(res);
     const response = await agent.post("/todos").send({
       title: "Buy milk",
       dueDate: new Date().toISOString(),
       completed: false,
+      _csrf: csrfToken,
     });
     expect(response.statusCode).toBe(302);
   });

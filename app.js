@@ -1,12 +1,18 @@
 const express = require("express");
+let csrf = require("csurf");
 const path = require("path");
 const app = express();
 const { Todo } = require("./models");
 const bodyParser = require("body-parser");
+let cookieParser = require("cookie-parser");
+
 // eslint-disable-next-line no-unused-vars
 const todo = require("./models/todo");
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser("shh! some secret string"));
+app.use(csrf({ cookie: true }));
+
 // eslint-disable-next-line no-undef
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
@@ -22,12 +28,14 @@ app.get("/", async function (request, response) {
         overdueItems: overdueItems,
         dueTodayItems: dueTodayItems,
         dueLaterItems: dueLaterItems,
+        csrfToken: request.csrfToken(),
       });
     } else {
       return response.json({
         overdueItems: overdueItems,
         dueTodayItems: dueTodayItems,
         dueLaterItems: dueLaterItems,
+        //csrfToken: request.csrfToken(),
       });
     }
   } catch (error) {
