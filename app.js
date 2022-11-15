@@ -1,5 +1,5 @@
 const express = require("express");
-let csrf = require("csurf");
+let csrf = require("tiny-csrf");
 const path = require("path");
 const app = express();
 const { Todo } = require("./models");
@@ -11,7 +11,7 @@ const todo = require("./models/todo");
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser("shh! some secret string"));
-app.use(csrf({ cookie: true }));
+app.use(csrf("123456789iamasecret987654321look", ["PUT", "POST", "DELETE"]));
 
 // eslint-disable-next-line no-undef
 app.use(express.static(path.join(__dirname, "public")));
