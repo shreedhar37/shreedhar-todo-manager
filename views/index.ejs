@@ -50,7 +50,7 @@
 
         <!-- render contents of todo.ejs -->
         <div>
-          <div class="flex items-center">
+          <div class="flex items-center mb-4">
             <h5>Overdue</h5>
             <span class="bg-gray-200 rounded px-2 text-sm ml-2 rounded"
               ><%= overdueItems.length %></span
@@ -65,7 +65,7 @@
           </div>
           <%- include("todos.ejs", {todoItems: dueTodayItems}) %>
 
-          <div class="flex items-center">
+          <div class="flex items-center mb-4">
             <h5>Due Later</h5>
             <span class="bg-gray-200 rounded px-2 text-sm ml-2 rounded"
               ><%= dueLaterItems.length %></span
@@ -73,6 +73,14 @@
           </div>
           <%- include("todos.ejs", {todoItems: dueLaterItems}) %>
         </div>
+        <div class="flex items-center">
+          <h5>Completed Items</h5>
+          <span class="bg-gray-200 rounded px-2 text-sm ml-2 rounded"
+            ><%= completedItems.length %></span
+          >
+        </div>
+        <%- include("todos.ejs", {todoItems: completedItems}) %>
+      </div>
       </div>
     </div>
     <!-- render the contents of footer.ejs  -->

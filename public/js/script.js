@@ -6,7 +6,7 @@ let csrfToken = document
 
 // eslint-disable-next-line no-unused-vars
 const updateTodo = (id) => {
-  fetch(`/todos/${id}/markAsCompleted`, {
+  fetch(`/todos/${id}`, {
     method: "put",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

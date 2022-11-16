@@ -8,6 +8,7 @@ let cookieParser = require("cookie-parser");
 
 // eslint-disable-next-line no-unused-vars
 const todo = require("./models/todo");
+
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser("shh! some secret string"));
@@ -22,12 +23,14 @@ app.get("/", async function (request, response) {
     const overdueItems = await Todo.getOverdueItems();
     const dueTodayItems = await Todo.getDueTodayItems();
     const dueLaterItems = await Todo.getDueLaterItems();
+    const completedItems = await Todo.getCompletedTodos();
 
     if (request.accepts("html")) {
       return response.render("index", {
         overdueItems: overdueItems,
         dueTodayItems: dueTodayItems,
         dueLaterItems: dueLaterItems,
+        completedItems: completedItems,
         csrfToken: request.csrfToken(),
       });
     } else {
@@ -35,7 +38,7 @@ app.get("/", async function (request, response) {
         overdueItems: overdueItems,
         dueTodayItems: dueTodayItems,
         dueLaterItems: dueLaterItems,
-        //csrfToken: request.csrfToken(),
+        completedItems: completedItems,
       });
     }
   } catch (error) {
@@ -81,10 +84,11 @@ app.post("/todos", async function (request, response) {
   }
 });
 
-app.put("/todos/:id/markAsCompleted", async function (request, response) {
+app.put("/todos/:id", async function (request, response) {
   const todo = await Todo.findByPk(request.params.id);
+
   try {
-    const updatedTodo = await todo.markAsCompleted();
+    const updatedTodo = await todo.setCompletionStatus();
     return response.json(updatedTodo);
   } catch (error) {
     console.log(error);
