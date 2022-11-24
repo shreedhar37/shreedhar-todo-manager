@@ -49,40 +49,11 @@
         <br />
 
         <!-- render contents of todo.ejs -->
-        <div>
-          <div class="flex items-center mb-4">
-            <h5>Overdue</h5>
-            <span class="bg-gray-200 rounded px-2 text-sm ml-2 rounded"
-              ><%= overdueItems.length %></span
-            >
-          </div>
-          <%- include("todos.ejs", {todoItems: overdueItems}) %>
-          <div class="flex items-center mb-4">
-            <h5>Due Today</h5>
-            <span class="bg-gray-200 rounded px-2 text-sm ml-2 rounded"
-              ><%= dueTodayItems.length %></span
-            >
-          </div>
-          <%- include("todos.ejs", {todoItems: dueTodayItems}) %>
-
-          <div class="flex items-center mb-4">
-            <h5>Due Later</h5>
-            <span class="bg-gray-200 rounded px-2 text-sm ml-2 rounded"
-              ><%= dueLaterItems.length %></span
-            >
-          </div>
-          <%- include("todos.ejs", {todoItems: dueLaterItems}) %>
-        </div>
-        <div class="flex items-center">
-          <h5>Completed Items</h5>
-          <span class="bg-gray-200 rounded px-2 text-sm ml-2 rounded"
-            ><%= completedItems.length %></span
-          >
-        </div>
-        <%- include("todos.ejs", {todoItems: completedItems}) %>
-      </div>
-      </div>
-    </div>
+        <%- include('todos.ejs', {title: "Overdue", todoItems: overdueItems}) %>
+        <%- include('todos.ejs', {title: "Due Today", todoItems: dueTodayItems}) %>
+        <%- include('todos.ejs', {title: "Due Later", todoItems: dueLaterItems}) %>
+        <%- include('todos.ejs', {title: "Completed Items", todoItems: completedItems}) %>
+        
     <!-- render the contents of footer.ejs  -->
     <!-- <footer><%- include("footer.ejs") %></footer> -->
   </body>
