@@ -1,4 +1,4 @@
-console.log("First JS import on EJS application!!");
+//console.log("First JS import on EJS application!!");
 
 let csrfToken = document
   .querySelector('meta[name="csrf-token"]')
@@ -6,11 +6,15 @@ let csrfToken = document
 
 // eslint-disable-next-line no-unused-vars
 const updateTodo = (id) => {
+  let completedStatus = document.querySelector(`#todo-checkbox-${id}`).checked;
+  //console.log(completedStatus);
+
   fetch(`/todos/${id}`, {
     method: "put",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       _csrf: csrfToken,
+      completed: completedStatus,
     }),
   })
     .then((res) => {
