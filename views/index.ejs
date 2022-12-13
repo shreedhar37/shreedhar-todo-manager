@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/styles.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="/js/script.js" type="text/javascript"></script>
-    <title>TO-DO Manager</title>
+    <title><%= title %></title>
   </head>
   <body>
     <!-- ender the contents of header.js -->
@@ -15,6 +15,10 @@
     <div class="grid grid-cols-6">
       <div class="col-start-3 col-span-2">
         <header><%- include('header.ejs') %></header>
+        <p class="py-2"> Welcome to To-Do Manager</p>
+        <p class="py-2"> New here ? <a href="/signup" class="text-green-600"> Sign-up now</a></p>
+        <p class="py-2"> Already have an account ? <a href="/login" class="text-green-600">Sign-In</a></p>
+      
         <form action="/todos" method="post">
           <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
           <div class="flex gap-2 py-4">

@@ -2,7 +2,7 @@ const express = require("express");
 let csrf = require("tiny-csrf");
 const path = require("path");
 const app = express();
-const { Todo } = require("./models");
+const { Todo, User } = require("./models");
 const bodyParser = require("body-parser");
 let cookieParser = require("cookie-parser");
 
@@ -24,9 +24,11 @@ app.get("/", async function (request, response) {
     const dueTodayItems = await Todo.getDueTodayItems();
     const dueLaterItems = await Todo.getDueLaterItems();
     const completedItems = await Todo.getCompletedTodos();
+    const pageTitle = "TO-DO Manager";
 
     if (request.accepts("html")) {
       return response.render("index", {
+        title: pageTitle,
         overdueItems: overdueItems,
         dueTodayItems: dueTodayItems,
         dueLaterItems: dueLaterItems,
@@ -35,6 +37,7 @@ app.get("/", async function (request, response) {
       });
     } else {
       return response.json({
+        title: pageTitle,
         overdueItems: overdueItems,
         dueTodayItems: dueTodayItems,
         dueLaterItems: dueLaterItems,
@@ -117,4 +120,22 @@ app.delete("/todos/:id", async function (request, response) {
   } else return response.send(false);
 });
 
+app.get("/signup", (request, response) => {
+  response.render("signup", {
+    title: "Sign up",
+    csrfToken: request.csrfToken(),
+  });
+});
+
+app.post("/users", async (request, response) => {
+  // creating user
+
+  try {
+    const user = await User.createUser(request.body);
+    console.log(user);
+    response.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
+});
 module.exports = app;
