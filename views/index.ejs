@@ -18,46 +18,7 @@
         <p class="py-2"> Welcome to To-Do Manager</p>
         <p class="py-2"> New here ? <a href="/signup" class="text-green-600"> Sign-up now</a></p>
         <p class="py-2"> Already have an account ? <a href="/login" class="text-green-600">Sign-In</a></p>
-      
-        <form action="/todos" method="post">
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-          <div class="flex gap-2 py-4">
-            <div class="flex-auto">
-              <input
-                type="text"
-                name="title"
-                placeholder="What's next?"
-                class="border border-gray-300 w-full rounded p-2 text-sm"
-                required
-              />
-            </div>
-            <div class="flex-auto">
-              <input
-                type="date"
-                name="dueDate"
-                required
-                class="border border-gray-300 w-full rounded p-2 text-sm leading-4"
-                value='<%= new Date().toLocaleDateString("en-CA"); %>'
-              />
-            </div>
-            <div class="flex-none">
-              <button
-                type="submit"
-                class="bg-green-600 text-white px-5 py-2 rounded font-medium mr-2 mb-2 py-1.5"
-              >
-                Add
-              </button>
-            </div>
-          </div>
-        </form>
-        <br />
-
-        <!-- render contents of todo.ejs -->
-        <%- include('todos.ejs', {title: "Overdue", todoItems: overdueItems}) %>
-        <%- include('todos.ejs', {title: "Due Today", todoItems: dueTodayItems}) %>
-        <%- include('todos.ejs', {title: "Due Later", todoItems: dueLaterItems}) %>
-        <%- include('todos.ejs', {title: "Completed Items", todoItems: completedItems}) %>
-        
+     
     <!-- render the contents of footer.ejs  -->
     <!-- <footer><%- include("footer.ejs") %></footer> -->
   </body>

@@ -15,8 +15,13 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    static addTodo({ title, dueDate }) {
-      return this.create({ title: title, dueDate: dueDate, completed: false });
+    static addTodo({ title, dueDate, userId }) {
+      return this.create({
+        title: title,
+        dueDate: dueDate,
+        completed: false,
+        userId,
+      });
     }
 
     setCompletionStatus(completedStatus) {
@@ -32,11 +37,12 @@ module.exports = (sequelize, DataTypes) => {
       return todos;
     }
 
-    static getOverdueItems() {
+    static getOverdueItems(userId) {
       const overdueItems = Todo.findAll({
         where: {
           dueDate: { [Op.lt]: new Date() },
           completed: { [Op.eq]: false },
+          userId,
         },
         order: [["id", "ASC"]],
       });
@@ -44,11 +50,12 @@ module.exports = (sequelize, DataTypes) => {
       return overdueItems;
     }
 
-    static getDueTodayItems() {
+    static getDueTodayItems(userId) {
       const dueTodayItems = Todo.findAll({
         where: {
           dueDate: new Date(),
           completed: { [Op.eq]: false },
+          userId,
         },
         order: [["id", "ASC"]],
       });
@@ -56,11 +63,12 @@ module.exports = (sequelize, DataTypes) => {
       return dueTodayItems;
     }
 
-    static getDueLaterItems() {
+    static getDueLaterItems(userId) {
       const dueLaterItems = Todo.findAll({
         where: {
           dueDate: { [Op.gt]: new Date() },
           completed: { [Op.eq]: false },
+          userId,
         },
         order: [["id", "ASC"]],
       });
@@ -68,17 +76,18 @@ module.exports = (sequelize, DataTypes) => {
       return dueLaterItems;
     }
 
-    deleteTodo() {
+    deleteTodo(userId) {
       return this.destroy({
         where: {
           id: this.id,
+          userId,
         },
       });
     }
 
-    static getCompletedTodos() {
+    static getCompletedTodos(userId) {
       return this.findAll({
-        where: { completed: { [Op.eq]: true } },
+        where: { completed: { [Op.eq]: true }, userId },
         order: [["id", "DESC"]],
       });
     }

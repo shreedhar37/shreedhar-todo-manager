@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    static createUser({ firstName, lastName, email, password }) {
+    static createUser(firstName, lastName, email, password) {
       console.log(firstName, lastName, email, password);
       return this.create({
         firstName: firstName,
