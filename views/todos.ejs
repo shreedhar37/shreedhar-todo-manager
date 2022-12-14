@@ -14,8 +14,13 @@
 
     <div class="grid grid-cols-6">
       <div class="col-start-3 col-span-2">
-        <header><%- include('header.ejs') %></header>
-        <a href="/signout"> Sign out</a>
+        <header><%- include('header.ejs') %>
+        </header>
+        <a href="/signout">
+          <button class="bg-red-600 text-white px-2 py-2 rounded text-sm float-right mt-4 ml-4">
+            Sign out
+          </button>
+        </a>
         <form action="/todos" method="post">
           <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
           <div class="flex gap-2 py-4">
@@ -48,6 +53,12 @@
           </div>
         </form>
         <br />
+
+        <% if (messages && messages.error && messages.error.length > 0) { %>
+          <% messages.error.forEach((error_msg) => { %>
+           <p class="text-red-500 py-2"><%= error_msg %></p>
+          <% }) %>  
+        <% } %>
 
         <!-- render contents of todo.ejs -->
         <%- include('todo.ejs', {title: "Overdue", todoItems: overdueItems}) %>

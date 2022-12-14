@@ -8,6 +8,7 @@ let cookieParser = require("cookie-parser");
 const passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
 const session = require("express-session");
+const flash = require("connect-flash");
 const LocalStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -21,7 +22,10 @@ app.use(csrf("123456789iamasecret987654321look", ["PUT", "POST", "DELETE"]));
 
 // eslint-disable-next-line no-undef
 app.use(express.static(path.join(__dirname, "public")));
+// eslint-disable-next-line no-undef
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
 app.use(
   session({
     secret: "my-super-secret-key-13123123123123112312",
@@ -32,6 +36,11 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
+app.use(function (request, response, next) {
+  response.locals.messages = request.flash();
+  next();
+});
 
 passport.use(
   new LocalStrategy(
@@ -46,11 +55,11 @@ passport.use(
           if (result) {
             return done(null, user);
           } else {
-            return done("Invalid Credentials");
+            return done(null, false, { message: "Invalid Credentials" });
           }
         })
-        .catch((error) => {
-          return error;
+        .catch(() => {
+          return done(null, false, { message: "Invalid Credentials" });
         });
     }
   )
@@ -72,7 +81,11 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-app.get("/", async function (request, response) {
+app.get("/", (request, response) => {
+  if (request.user) {
+    console.log("loggedin request");
+    return response.redirect("/todos");
+  }
   return response.render("index", {
     title: "Todo Application",
     csrfToken: request.csrfToken,
@@ -85,7 +98,10 @@ app.get("/login", (request, response) => {
 
 app.post(
   "/session",
-  passport.authenticate("local", { failureRedirect: "/login" }),
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
   (request, response) => {
     console.log(request.user);
     response.redirect("/todos");
@@ -138,15 +154,19 @@ app.get(
   }
 );
 
-app.get("/todos/:id", async function (request, response) {
-  try {
-    const todo = await Todo.findByPk(request.params.id);
-    return response.json(todo);
-  } catch (error) {
-    console.log(error);
-    return response.status(422).json(error);
+app.get(
+  "/todos/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async function (request, response) {
+    try {
+      const todo = await Todo.findByPk(request.params.id);
+      return response.json(todo);
+    } catch (error) {
+      console.log(error);
+      return response.status(422).json(error);
+    }
   }
-});
+);
 
 app.post(
   "/todos",

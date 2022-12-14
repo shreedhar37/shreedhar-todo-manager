@@ -17,7 +17,7 @@
   <div class="grid grid-cols-6">
     <div class="col-start-3 col-span-2">
       <header><%- include('header.ejs') %></header>
-      <h6 class="py-4"> Please login to contiue</h6>  
+      <h6 class="py-4"> Please login to continue</h6>  
       <form action="/session" method="post">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>"> 
        
@@ -36,7 +36,14 @@
         </div>
       
     </form>
-    </div>
+    <% if (messages && messages.error && messages.error.length > 0) { %>
+      <% messages.error.forEach((error_msg) => { %>
+       <p class="text-red-500 py-2"><%= error_msg %></p>
+      <% }) %>  
+    <% } %>
+
+    
+  </div>
   </div>
 </body>
 </html>
