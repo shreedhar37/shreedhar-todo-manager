@@ -1,0 +1,15 @@
+<div class="grid">
+  <% if (messages.success) {messages.success.forEach((msg) => { %>
+  <div
+    class="text-center bg-green-500 font-medium rounded py-1 px-1 mt-2 mb-2 w-full border-2 border-green-600"
+  >
+    <li class="text-white list-none"><%= msg %></li>
+  </div>
+  <% })} if (messages.error) { messages.error.forEach((msg) => { %>
+  <div
+    class="text-center bg-red-500 font-medium rounded py-1 px-1 mt-2 mb-2 w-full border-2 border-red-600"
+  >
+    <li class="text-white list-none"><%= msg %></li>
+  </div>
+  <% }) %> <% } %>
+</div>

@@ -23,7 +23,7 @@
        
         <div class="py-3">    
         <label for="email">Email :</label>
-        <input type="email" name="email"  class="border border-gray-300 text-gray-900 rounded p-2 w-full" required>
+        <input type="email" name="email"  class="border border-gray-300 text-gray-900 rounded p-2 w-full" required autofocus>
         </div>
 
         <div class="py-3">
@@ -36,14 +36,12 @@
         </div>
       
     </form>
-    <% if (messages && messages.error && messages.error.length > 0) { %>
-      <% messages.error.forEach((error_msg) => { %>
-       <p class="text-red-500 py-2"><%= error_msg %></p>
-      <% }) %>  
-    <% } %>
+    <%- include("footer.ejs") %>
 
     
   </div>
+ 
   </div>
+ 
 </body>
 </html>

@@ -83,7 +83,6 @@ passport.deserializeUser((id, done) => {
 
 app.get("/", (request, response) => {
   if (request.user) {
-    console.log("loggedin request");
     return response.redirect("/todos");
   }
   return response.render("index", {
@@ -104,6 +103,7 @@ app.post(
   }),
   (request, response) => {
     console.log(request.user);
+    request.flash("success", "welcome back");
     response.redirect("/todos");
   }
 );
@@ -113,6 +113,7 @@ app.get("/signout", (request, response, next) => {
   //signout
   request.logout((error) => {
     if (error) return;
+    request.flash("success", "Logged out sucessfully");
     response.redirect("/");
   });
 });
@@ -121,7 +122,13 @@ app.get(
   "/todos",
   connectEnsureLogin.ensureLoggedIn(),
   async function (request, response) {
+    //  response.locals.messages.forEach((msg) => console.log(msg));
     const loggedInUser = request.user.id;
+    const userName =
+      request.user.firstName.charAt(0).toUpperCase() +
+      "" +
+      request.user.firstName.slice(1);
+
     try {
       const overdueItems = await Todo.getOverdueItems(loggedInUser);
       const dueTodayItems = await Todo.getDueTodayItems(loggedInUser);
@@ -136,6 +143,7 @@ app.get(
           dueTodayItems: dueTodayItems,
           dueLaterItems: dueLaterItems,
           completedItems: completedItems,
+          userName: userName,
           csrfToken: request.csrfToken(),
         });
       } else {
@@ -145,6 +153,7 @@ app.get(
           dueTodayItems: dueTodayItems,
           dueLaterItems: dueLaterItems,
           completedItems: completedItems,
+          userName: userName,
         });
       }
     } catch (error) {
@@ -179,10 +188,12 @@ app.post(
         userId: request.user.id,
       });
       //return response.json(todo);
+      request.flash("success", "Added one todo successfully");
       return response.redirect("/todos");
     } catch (error) {
       console.log(error);
-      return response.status(422).json(error);
+      request.flash("error", "Please add todo with atleast 5 characters");
+      return response.redirect("/todos");
     }
   }
 );
@@ -198,6 +209,8 @@ app.put(
       const updatedTodo = await todo.setCompletionStatus(
         request.body.completed
       );
+      request.flash("success", "Updated one todo successfully");
+
       return response.json(updatedTodo);
     } catch (error) {
       console.log(error);
@@ -211,15 +224,12 @@ app.delete(
   connectEnsureLogin.ensureLoggedIn(),
   async function (request, response) {
     console.log("We have to delete a Todo with ID: ", request.params.id);
-    // FILL IN YOUR CODE HERE
 
-    // First, we have to query our database to delete a Todo by ID.
-    // Then, we have to respond back with true/false based on whether the Todo was deleted or not.
-    // response.send(true)
     const todo = await Todo.findByPk(request.params.id);
     if (todo) {
       try {
         const deletedTodo = await todo.deleteTodo();
+        request.flash("success", "Deleted one todo successfully");
 
         return response.send(deletedTodo ? true : false);
       } catch (error) {
@@ -240,10 +250,17 @@ app.get("/signup", (request, response) => {
 app.post("/users", async (request, response) => {
   // secure the password
   const hashedPassword = await bcrypt.hash(request.body.password, saltRounds);
-  console.log(hashedPassword);
 
   // creating user
   try {
+    const alreadyUsedEmail = await User.findOne({
+      where: { email: request.body.email },
+    });
+
+    if (alreadyUsedEmail) {
+      request.flash("error", "A user with this email is already registered");
+      response.redirect("/signup");
+    }
     const user = await User.createUser(
       request.body.firstName,
       request.body.lastName,
@@ -254,6 +271,7 @@ app.post("/users", async (request, response) => {
       if (err) {
         console.log(err);
       }
+      request.flash("success", "Account created successfully");
       response.redirect("/todos");
     });
   } catch (error) {

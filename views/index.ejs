@@ -15,11 +15,17 @@
     <div class="grid grid-cols-6">
       <div class="col-start-3 col-span-2">
         <header><%- include('header.ejs') %></header>
-        <p class="py-2"> Welcome to To-Do Manager</p>
+        
+        <p class="py-2"> Welcome to Todo-Manager</p>
         <p class="py-2"> New here ? <a href="/signup" class="text-green-600"> Sign-up now</a></p>
         <p class="py-2"> Already have an account ? <a href="/login" class="text-green-600">Sign-In</a></p>
      
+        <% if (messages && messages.error && messages.error.length > 0) { %>
+          <% messages.error.forEach((error_msg) => { %>
+           <p class="text-red-500 py-2"><%= error_msg %></p>
+          <% }) %>  
+        <% } %>
     <!-- render the contents of footer.ejs  -->
-    <!-- <footer><%- include("footer.ejs") %></footer> -->
+    <%- include("footer.ejs") %>
   </body>
 </html>
