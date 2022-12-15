@@ -248,9 +248,6 @@ app.get("/signup", (request, response) => {
 });
 
 app.post("/users", async (request, response) => {
-  // secure the password
-  const hashedPassword = await bcrypt.hash(request.body.password, saltRounds);
-
   // creating user
   try {
     const alreadyUsedEmail = await User.findOne({
@@ -261,6 +258,20 @@ app.post("/users", async (request, response) => {
       request.flash("error", "A user with this email is already registered");
       response.redirect("/signup");
     }
+
+    if (request.body.firstName.length < 3) {
+      request.flash("error", "Firstname should contain atleast 3 characters");
+      response.redirect("/signup");
+    }
+
+    if (request.body.password.length < 8) {
+      request.flash("error", "Password should contain atleast 8 characters");
+      response.redirect("/signup");
+    }
+
+    // secure the password
+    const hashedPassword = await bcrypt.hash(request.body.password, saltRounds);
+
     const user = await User.createUser(
       request.body.firstName,
       request.body.lastName,
