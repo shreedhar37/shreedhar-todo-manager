@@ -268,7 +268,8 @@ app.post("/users", async (request, response) => {
       request.flash("error", "Password should contain atleast 8 characters");
       response.redirect("/signup");
     }
-
+    
+    else {
     // secure the password
     const hashedPassword = await bcrypt.hash(request.body.password, saltRounds);
 
@@ -285,7 +286,7 @@ app.post("/users", async (request, response) => {
       request.flash("success", "Account created successfully");
       response.redirect("/todos");
     });
-  } catch (error) {
+  }} catch (error) {
     console.log(error);
   }
 });
