@@ -102,7 +102,7 @@ app.post(
     failureFlash: true,
   }),
   (request, response) => {
-    console.log(request.user);
+    // console.log(request.user);
     request.flash("success", "welcome back");
     response.redirect("/todos");
   }
