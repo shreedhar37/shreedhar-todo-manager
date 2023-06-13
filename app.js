@@ -66,12 +66,12 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  console.log("Serializing user in session : ", user.id);
+  // console.log("Serializing user in session : ", user.id);
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  console.log("Deserializing user in session");
+  // console.log("Deserializing user in session");
   User.findByPk(id)
     .then((user) => {
       done(null, user);
@@ -267,26 +267,28 @@ app.post("/users", async (request, response) => {
     if (request.body.password.length < 8) {
       request.flash("error", "Password should contain atleast 8 characters");
       response.redirect("/signup");
-    }
-    
-    else {
-    // secure the password
-    const hashedPassword = await bcrypt.hash(request.body.password, saltRounds);
+    } else {
+      // secure the password
+      const hashedPassword = await bcrypt.hash(
+        request.body.password,
+        saltRounds
+      );
 
-    const user = await User.createUser(
-      request.body.firstName,
-      request.body.lastName,
-      request.body.email,
-      hashedPassword
-    );
-    request.login(user, (err) => {
-      if (err) {
-        console.log(err);
-      }
-      request.flash("success", "Account created successfully");
-      response.redirect("/todos");
-    });
-  }} catch (error) {
+      const user = await User.createUser(
+        request.body.firstName,
+        request.body.lastName,
+        request.body.email,
+        hashedPassword
+      );
+      request.login(user, (err) => {
+        if (err) {
+          console.log(err);
+        }
+        request.flash("success", "Account created successfully");
+        response.redirect("/todos");
+      });
+    }
+  } catch (error) {
     console.log(error);
   }
 });
